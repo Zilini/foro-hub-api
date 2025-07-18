@@ -1,7 +1,6 @@
 package foro.hub.api.domain.topico;
 
 import foro.hub.api.domain.curso.Curso;
-import foro.hub.api.domain.usuario.DatosRegistroUsuario;
 import foro.hub.api.domain.usuario.Usuario;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -30,14 +29,15 @@ public class Topico {
     private Usuario autor;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cursos_categoria")
+    @JoinColumn(name = "cursos_nombre")
     private Curso curso;
+
+    private String nombreCurso;
 
     public Topico(DatosRegistroTopico datos) {
         this.id = null;
         this.titulo = datos.titulo();
         this.mensaje = datos.mensaje();
-        this.autor = datos.autor();
-        this.curso = datos.curso();
+        this.nombreCurso = datos.nombreCurso();
     }
 }
