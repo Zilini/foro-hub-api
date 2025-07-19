@@ -1,14 +1,16 @@
 package foro.hub.api.domain.topico;
 
-import foro.hub.api.domain.curso.Curso;
-import foro.hub.api.domain.usuario.Usuario;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+
+import java.time.LocalDateTime;
 
 public record DatosRegistroTopico(
         @NotNull Long idUsuario,
         @NotBlank String titulo,
         @NotBlank String mensaje,
-        @NotNull String nombreCurso
+        Status status,
+        //@NotNull Long idCurso
+        @NotBlank String nombreCurso
         ) {
 }

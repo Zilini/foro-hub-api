@@ -31,10 +31,13 @@ public class TopicoController {
     @PostMapping
     public void registroTopico(@RequestBody @Valid DatosRegistroTopico datos) {
 
-        var autor = usuarioRepository.findById(datos.idUsuario());
+        var autor = usuarioRepository.findById(datos.idUsuario())
+                .orElseThrow(() -> new EntityNotFoundException("Autor no encontrado."));
         var curso = cursoRepository.findByNombre(datos.nombreCurso())
                 .orElseThrow(() -> new EntityNotFoundException("Curso no encontrado."));
 
-        topicoRepository.save(new Topico(datos));
+        topicoRepository.save(new Topico(datos,autor ,curso));
+
+        System.out.println(datos);
     }
 }

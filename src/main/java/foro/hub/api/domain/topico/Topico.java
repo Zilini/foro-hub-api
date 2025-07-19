@@ -8,6 +8,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Table(name = "topicos")
 @Entity(name = "Topico")
 
@@ -24,20 +26,26 @@ public class Topico {
     private String titulo;
     private String mensaje;
 
+    private LocalDateTime fechaCreacion;
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "usuarios_id")
+    @JoinColumn(name = "autor_id")
     private Usuario autor;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cursos_nombre")
+    @JoinColumn(name = "curso_id")
     private Curso curso;
 
-    private String nombreCurso;
-
-    public Topico(DatosRegistroTopico datos) {
+    public Topico(DatosRegistroTopico datos, Usuario autor, Curso curso) {
         this.id = null;
         this.titulo = datos.titulo();
         this.mensaje = datos.mensaje();
-        this.nombreCurso = datos.nombreCurso();
+        this.fechaCreacion = LocalDateTime.now();
+        this.status = (datos.status() != null) ? datos.status() : Status.ABIERTO;
+        this.autor = autor;
+        this.curso = curso;
     }
 }
