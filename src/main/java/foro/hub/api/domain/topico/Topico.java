@@ -48,5 +48,5 @@ public class Topico {
         this.autor = autor;
         this.curso = curso;
     }
-    
+
 }
