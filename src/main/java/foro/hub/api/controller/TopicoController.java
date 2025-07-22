@@ -44,4 +44,12 @@ public class TopicoController {
         return topicoRepository.findAll(paginacion)
                 .map(DatosListaTopico::new);
     }
+
+    @Transactional
+    @PutMapping
+    public void actualizarTopico(@RequestBody @Valid DatosActualizacionTopico datos) {
+
+        var topicos = topicoRepository.getReferenceById(datos.id());
+        topicos.actualizarInformacio(datos);
+    }
 }
