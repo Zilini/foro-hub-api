@@ -36,4 +36,10 @@ public class Usuario {
         this.contrasena = datos.contrasena();
         this.perfil = datos.perfil();
     }
+
+    public void actualizarAutor(Usuario autor) {
+        if (autor.nombre != null) {
+            this.nombre = autor.nombre;
+        }
+    }
 }

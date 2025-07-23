@@ -3,6 +3,7 @@ package foro.hub.api.domain.topico;
 import foro.hub.api.domain.curso.Curso;
 import foro.hub.api.domain.usuario.Usuario;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -49,4 +50,18 @@ public class Topico {
         this.curso = curso;
     }
 
+    public void actualizarInformacion(@Valid DatosActualizacionTopico datos) {
+        if (datos.titulo() != null) {
+            this.titulo = datos.titulo();
+        }
+        if (datos.mensaje() != null) {
+            this.mensaje = datos.mensaje();
+        }
+        if (datos.status() != null) {
+            this.status = datos.status();
+        }
+        if (datos.autor() != null) {
+            this.autor.actualizarAutor(datos.autor());
+        }
+    }
 }

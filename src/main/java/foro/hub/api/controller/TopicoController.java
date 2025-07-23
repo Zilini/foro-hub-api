@@ -2,6 +2,7 @@ package foro.hub.api.controller;
 
 import foro.hub.api.domain.curso.CursoRepository;
 import foro.hub.api.domain.topico.*;
+import foro.hub.api.domain.usuario.Usuario;
 import foro.hub.api.domain.usuario.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
@@ -11,8 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/topicos")
@@ -36,7 +35,7 @@ public class TopicoController {
         var curso = cursoRepository.findByNombre(datos.nombreCurso())
                 .orElseThrow(() -> new EntityNotFoundException("Curso no encontrado."));
 
-        topicoRepository.save(new Topico(datos,autor ,curso));
+        topicoRepository.save(new Topico(datos, autor, curso));
     }
 
     @GetMapping
@@ -47,9 +46,8 @@ public class TopicoController {
 
     @Transactional
     @PutMapping
-    public void actualizarTopico(@RequestBody @Valid DatosActualizacionTopico datos) {
-
-        var topicos = topicoRepository.getReferenceById(datos.id());
-        topicos.actualizarInformacio(datos);
+    public void actualizarTopico(@RequestBody @Valid DatosActualizacionTopico datos){
+        var topico = topicoRepository.getReferenceById(datos.id());
+        topico.actualizarInformacion(datos);
     }
 }
