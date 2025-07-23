@@ -60,8 +60,5 @@ public class Topico {
         if (datos.status() != null) {
             this.status = datos.status();
         }
-        if (datos.autor() != null) {
-            this.autor.actualizarAutor(datos.autor());
-        }
     }
 }

@@ -1,13 +1,11 @@
 package foro.hub.api.domain.topico;
 
-import foro.hub.api.domain.usuario.Usuario;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public record DatosActualizacionTopico(
-        @NotBlank Long id,
+        @NotNull Long id,
         String titulo,
         String mensaje,
-        Status status,
-        Usuario autor
+        Status status
 ) {
 }
