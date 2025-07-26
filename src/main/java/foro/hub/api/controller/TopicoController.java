@@ -3,7 +3,6 @@ package foro.hub.api.controller;
 import foro.hub.api.domain.curso.CursoRepository;
 import foro.hub.api.domain.curso.DatosDetalleCurso;
 import foro.hub.api.domain.topico.*;
-import foro.hub.api.domain.usuario.Usuario;
 import foro.hub.api.domain.usuario.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;

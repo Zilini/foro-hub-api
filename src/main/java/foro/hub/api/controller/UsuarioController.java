@@ -55,6 +55,15 @@ public class UsuarioController {
         return ResponseEntity.noContent().build();
     }
 
+    @Transactional
+    @PostMapping("/{id}")
+    public ResponseEntity activarUsuario(@PathVariable Long id) {
+        var usuario = usuarioRepository.getReferenceById(id);
+        usuario.activarUsuario();
+
+        return ResponseEntity.ok(new DatosDetalleUsuario(usuario));
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity detallarUsuario (@PathVariable Long id) {
         var usuario = usuarioRepository.getReferenceById(id);

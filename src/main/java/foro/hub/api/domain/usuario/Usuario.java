@@ -1,8 +1,6 @@
 package foro.hub.api.domain.usuario;
 
 import jakarta.persistence.*;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -49,5 +47,9 @@ public class Usuario {
 
     public void eliminarUsuario() {
         this.activo = false;
+    }
+
+    public void activarUsuario() {
+        this.activo = true;
     }
 }
