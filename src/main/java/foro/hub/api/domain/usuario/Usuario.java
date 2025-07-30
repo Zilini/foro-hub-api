@@ -30,8 +30,6 @@ public class Usuario implements UserDetails {
     private String correo;
     private String contrasena;
 
-    @Enumerated(EnumType.STRING)
-    private Perfil perfil;
 
     public Usuario(DatosRegistroUsuario datos) {
         this.id = null;
@@ -39,15 +37,11 @@ public class Usuario implements UserDetails {
         this.nombre = datos.nombre();
         this.correo = datos.correo();
         this.contrasena = datos.contrasena();
-        this.perfil = datos.perfil();
     }
 
     public void actualizarUsuario(DatosActualizacionUsuario datos) {
         if (datos.nombre() != null) {
             this.nombre = datos.nombre();
-        }
-        if (datos.perfil() != null) {
-            this.perfil = datos.perfil();
         }
     }
 

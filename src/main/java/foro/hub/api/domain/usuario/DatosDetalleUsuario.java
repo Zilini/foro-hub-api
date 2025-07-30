@@ -3,16 +3,14 @@ package foro.hub.api.domain.usuario;
 public record DatosDetalleUsuario(
         Long id,
         String nombre,
-        String correo,
-        Perfil perfil
+        String correo
 
 ) {
     public DatosDetalleUsuario(Usuario usuario) {
         this(
                 usuario.getId(),
                 usuario.getNombre(),
-                usuario.getCorreo(),
-                usuario.getPerfil()
+                usuario.getCorreo()
         );
     }
 }

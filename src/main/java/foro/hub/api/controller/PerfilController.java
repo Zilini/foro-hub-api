@@ -45,7 +45,7 @@ public class PerfilController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping
+    @GetMapping("/{id}")
     public ResponseEntity detallarPerfil(@PathVariable Long id) {
         var perfil = perfilRepository.getReferenceById(id);
 
