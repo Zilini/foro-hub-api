@@ -41,7 +41,7 @@ public class TopicoController {
 
         var uri = uriComponentsBuilder.path("/cursos/i{id}").buildAndExpand(topico.getId()).toUri();
 
-        return ResponseEntity.created(uri).body(new DatosDetalleCurso(curso));
+        return ResponseEntity.created(uri).body(new DatosDetalleTopico(topico));
     }
 
     @GetMapping
