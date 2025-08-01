@@ -1,6 +1,7 @@
 package foro.hub.api.controller;
 
 import foro.hub.api.domain.perfil.*;
+import foro.hub.api.domain.perfil.validaciones.ValidadorDePerfiles;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -11,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/perfiles")
 public class PerfilController {
@@ -18,10 +21,16 @@ public class PerfilController {
     @Autowired
     private PerfilRepository perfilRepository;
 
+    @Autowired
+    private List<ValidadorDePerfiles> validadores;
+
     @Transactional
     @PostMapping
     public ResponseEntity registrarPerfil(@RequestBody @Valid DatosRegistroPerfil datos, UriComponentsBuilder uriComponentsBuilder) {
         var perfil = new Perfil(datos);
+
+        validadores.forEach(v -> v.validar(datos));
+
         perfilRepository.save(perfil);
 
         var uri = uriComponentsBuilder.path("/perfiles/{id}").buildAndExpand(perfil.getId()).toUri();
@@ -43,5 +52,12 @@ public class PerfilController {
         perfilRepository.deleteById(id);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity detallarPerfil(@PathVariable Long id) {
+        var perfil = perfilRepository.getReferenceById(id);
+
+        return ResponseEntity.ok(new DatosDetallePerfil(perfil));
     }
 }

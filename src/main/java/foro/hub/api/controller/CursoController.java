@@ -1,6 +1,8 @@
 package foro.hub.api.controller;
 
+import foro.hub.api.domain.ValidacionException;
 import foro.hub.api.domain.curso.*;
+import foro.hub.api.domain.curso.validaciones.ValidadorDeCursos;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -11,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/cursos")
 public class CursoController {
@@ -18,10 +22,16 @@ public class CursoController {
     @Autowired
     private CursoRepository cursoRepository;
 
+    @Autowired
+    private List<ValidadorDeCursos> validadores;
+
     @Transactional
     @PostMapping
     public ResponseEntity registrarCurso(@RequestBody @Valid DatosRegistroCurso datos, UriComponentsBuilder uriComponentsBuilder) {
         var curso = new Curso(datos);
+
+        validadores.forEach(v -> v.validar(datos));
+
         cursoRepository.save(curso);
 
         var uri = uriComponentsBuilder.path("/cursos/{id}").buildAndExpand(curso.getId()).toUri();

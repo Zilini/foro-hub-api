@@ -1,5 +1,6 @@
 package foro.hub.api.controller;
 
+import foro.hub.api.domain.perfil.PerfilRepository;
 import foro.hub.api.domain.usuario.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +19,19 @@ public class UsuarioController {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private PerfilRepository perfilRepository;
+
     @Transactional
     @PostMapping
     public ResponseEntity registrarUsuario(@RequestBody @Valid DatosRegistroUsuario datos, UriComponentsBuilder uriComponentsBuilder) {
-        var usuario = new Usuario(datos);
+
+        var perfiles = perfilRepository.findAllById(datos.idPerfiles());
+        var usuario = new Usuario(datos, perfiles);
+
+        //validacion para comprobar si el nombre del curso a registrar ya existe
+
+
         usuarioRepository.save(usuario);
 
         var uri = uriComponentsBuilder.path("/usuarios/{id}").buildAndExpand(usuario.getId()).toUri();
