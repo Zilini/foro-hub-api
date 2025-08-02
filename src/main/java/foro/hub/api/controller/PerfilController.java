@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -26,6 +27,7 @@ public class PerfilController {
 
     @Transactional
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity registrarPerfil(@RequestBody @Valid DatosRegistroPerfil datos, UriComponentsBuilder uriComponentsBuilder) {
         var perfil = new Perfil(datos);
 
@@ -39,6 +41,7 @@ public class PerfilController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Page<DatosListaPerfil>> listarPerfiles(@PageableDefault(size = 5)Pageable paginacion) {
         var page = perfilRepository.findAll(paginacion)
                 .map(DatosListaPerfil::new);
@@ -48,6 +51,7 @@ public class PerfilController {
 
     @Transactional
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity eliminarPerfil(@PathVariable Long id) {
         perfilRepository.deleteById(id);
 
@@ -55,6 +59,7 @@ public class PerfilController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity detallarPerfil(@PathVariable Long id) {
         var perfil = perfilRepository.getReferenceById(id);
 

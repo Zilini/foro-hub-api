@@ -1,14 +1,15 @@
 package foro.hub.api.controller;
 
-import foro.hub.api.domain.ValidacionException;
 import foro.hub.api.domain.curso.*;
 import foro.hub.api.domain.curso.validaciones.ValidadorDeCursos;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -27,7 +28,9 @@ public class CursoController {
 
     @Transactional
     @PostMapping
-    public ResponseEntity registrarCurso(@RequestBody @Valid DatosRegistroCurso datos, UriComponentsBuilder uriComponentsBuilder) {
+    @PreAuthorize("hasRole('ADMIN') or hasRole('DOCENTE')")
+    public ResponseEntity registrarCurso(@RequestBody @Valid DatosRegistroCurso datos,
+                                         UriComponentsBuilder uriComponentsBuilder) {
         var curso = new Curso(datos);
 
         validadores.forEach(v -> v.validar(datos));
@@ -40,7 +43,8 @@ public class CursoController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<DatosListaCurso>> listarCursos(@PageableDefault(size = 10, sort = {"nombre"})Pageable paginacion) {
+    public ResponseEntity<Page<DatosListaCurso>> listarCursos(@PageableDefault(size = 10, sort = {"nombre"})
+                                                                  Pageable paginacion) {
         var page = cursoRepository.findAll(paginacion)
                 .map(DatosListaCurso::new);
 
@@ -49,15 +53,21 @@ public class CursoController {
 
     @Transactional
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('DOCENTE')")
     public ResponseEntity eliminarCurso(@PathVariable Long id) {
-        cursoRepository.deleteById(id);
+        if (cursoRepository.existsById(id)) {
+            cursoRepository.deleteById(id);
+            return ResponseEntity.noContent().build();
+        } else {
+            throw new EntityNotFoundException("Curso no encontrado con el ID: " + id);
+        }
 
-        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{id}")
     public  ResponseEntity detallarCurso(@PathVariable Long id) {
-        var curso = cursoRepository.getReferenceById(id);
+        var curso = cursoRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Curso no encontrado."));
 
         return ResponseEntity.ok(new DatosDetalleCurso(curso));
     }
