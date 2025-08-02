@@ -1,9 +1,7 @@
 package foro.hub.api.controller;
 
 import foro.hub.api.domain.perfil.PerfilRepository;
-import foro.hub.api.domain.topico.validaciones.ValidadorDeTopicos;
 import foro.hub.api.domain.usuario.*;
-import foro.hub.api.domain.usuario.validaciones.ValidadorDeUsuarios;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,9 +24,6 @@ public class UsuarioController {
 
     @Autowired
     private PerfilRepository perfilRepository;
-
-    @Autowired
-    private List<ValidadorDeUsuarios> validadores;
 
     @Transactional
     @PostMapping
