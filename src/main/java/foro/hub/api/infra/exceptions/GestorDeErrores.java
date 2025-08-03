@@ -3,6 +3,7 @@ package foro.hub.api.infra.exceptions;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -26,11 +27,17 @@ public class GestorDeErrores {
                 .toList());
     }
 
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    public ResponseEntity gestionarError403(AuthorizationDeniedException ex) {
+        var mensaje = "Acceso denegado. No estás autorizado para realizar esta acción.";
+        return ResponseEntity.status(403).body(mensaje);
+    }
+
+
     @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity gestionarAccesoDenegado(AccessDeniedException ex) {
-        var mensaje = "No estás autorizado para realizar esta acción.";
-        return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                .body(mensaje);
+    public ResponseEntity gestionarErrorAccesoDenegado(AccessDeniedException ex) {
+        var mensaje = "Acceso denegado. No estás autorizado para realizar esta acción.";
+        return ResponseEntity.status(403).body(new DatosErrorAccesoDenegado(mensaje));
     }
 
     public record DatosErrorValidacion (String campo, String mensaje){
@@ -40,5 +47,9 @@ public class GestorDeErrores {
                     error.getDefaultMessage()
             );
         }
+    }
+
+    public record DatosErrorAccesoDenegado(String mennsaje) {
+
     }
 }

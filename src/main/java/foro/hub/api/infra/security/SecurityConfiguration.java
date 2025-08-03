@@ -34,6 +34,11 @@ public class SecurityConfiguration {
                        .authenticated()
                )
                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+               .exceptionHandling(ex ->
+                       ex.accessDeniedHandler(
+                               (request, response, accessDeniedExeption) -> {
+                   throw accessDeniedExeption;
+               }))
                .build();
     }
 
