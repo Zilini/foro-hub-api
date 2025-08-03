@@ -2,6 +2,7 @@ package foro.hub.api.controller;
 
 import foro.hub.api.domain.curso.*;
 import foro.hub.api.domain.curso.validaciones.ValidadorDeCursos;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/cursos")
+@SecurityRequirement(name = "bearer-key")
 public class CursoController {
 
     @Autowired

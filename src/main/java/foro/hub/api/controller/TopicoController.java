@@ -4,6 +4,7 @@ import foro.hub.api.domain.curso.CursoRepository;
 import foro.hub.api.domain.topico.*;
 import foro.hub.api.domain.topico.validaciones.ValidadorDeTopicos;
 import foro.hub.api.domain.usuario.UsuarioRepository;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/topicos")
+@SecurityRequirement(name = "bearer-key")
 public class TopicoController {
 
     @Autowired
