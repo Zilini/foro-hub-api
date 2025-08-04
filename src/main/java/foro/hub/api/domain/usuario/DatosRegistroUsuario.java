@@ -10,7 +10,6 @@ import java.util.List;
 public record DatosRegistroUsuario(
         @NotBlank String nombre,
         @NotBlank @Email String correo,
-        @NotBlank String contrasena,
-        @NotEmpty List<Long> idPerfiles
+        @NotBlank String contrasena
         ) {
 }

@@ -42,12 +42,12 @@ public class Usuario implements UserDetails {
     private List<Perfil> perfiles;
 
 
-    public Usuario(DatosRegistroUsuario datos, List<Perfil> perfiles) {
+    public Usuario(DatosRegistroUsuario datos, String contrasena, List<Perfil> perfiles) {
         this.id = null;
         this.activo = true;
         this.nombre = datos.nombre();
         this.correo = datos.correo();
-        this.contrasena = datos.contrasena();
+        this.contrasena = contrasena;
         this.perfiles = perfiles;
     }
 
